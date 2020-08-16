@@ -86,7 +86,7 @@ $sendLocationButton.addEventListener("click", () => {
     const latitude = position.coords.latitude;
     socket.emit(
       "sendLocation",
-      `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=5&size=400x400&markers=color:red%7Csize:mid|${latitude},${longitude}&language=en&key=AIzaSyBN2XybvgzzYjeAFZkPzlNVlHXYpNuA-_8`,
+      `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=5&size=400x400&markers=color:red%7Csize:mid|${latitude},${longitude}&language=en&key=AIzaSyBN2XybvgzzYjeAFZkPzlNVlHXYpNuA-_8`, //key is available only for this app :)
       () => {
         $sendLocationButton.removeAttribute("disabled");
       }

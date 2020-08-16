@@ -31,11 +31,9 @@ const autoscroll = () => {
   if (containerHeight - newMessageHeight <= scrollOffset) {
     $messages.scrollTop = $messages.scrollHeight;
   }
-  console.log(newMessageMargin);
 };
 
 socket.on("message", (message) => {
-  console.log(message);
   const html = Mustache.render(messageTemplate, {
     username: message.username,
     message: message.text,
@@ -46,12 +44,12 @@ socket.on("message", (message) => {
 });
 
 socket.on("locationMessage", (message) => {
-  console.log(message.url);
   const html = Mustache.render(locationMessageTemplate, {
     username: message.username,
     url: message.url,
     createdAt: moment(message.createdAt).format("HH:mm:ss"),
   });
+
   $messages.insertAdjacentHTML("beforeend", html);
   autoscroll();
 });
@@ -75,8 +73,6 @@ $messageForm.addEventListener("submit", (e) => {
     if (error) {
       return console.log(error);
     }
-
-    console.log("Message delivered!");
   });
 });
 
@@ -90,9 +86,8 @@ $sendLocationButton.addEventListener("click", () => {
     const latitude = position.coords.latitude;
     socket.emit(
       "sendLocation",
-      `https://google.com/maps?q=${latitude},${longitude}`,
+      `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=5&size=400x400&markers=color:red%7Csize:mid|${latitude},${longitude}&language=en&key=AIzaSyBN2XybvgzzYjeAFZkPzlNVlHXYpNuA-_8`,
       () => {
-        console.log("Location shared");
         $sendLocationButton.removeAttribute("disabled");
       }
     );
@@ -105,5 +100,3 @@ socket.emit("join", { username, room }, (err) => {
     location.href = "/";
   }
 });
-
-//TODO don`t send empty message
